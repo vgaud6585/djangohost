@@ -1,0 +1,1 @@
+alert("record_new_data");

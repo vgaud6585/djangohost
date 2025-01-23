@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home page</title>
+    <link rel="stylesheet" href="{% static 'pack/css/main-page.css' %}" title="main-page" type="text/css" />
+  </head>
+  <body>
+    <div id="body" class="body-project">
+      <header class="header-bar">
+        <div class="logo">
+          <img src="{% static "pack/img/logo/gk105.png" %}" alt="logo" />
+        </div>
+        <div class="brand-name">
+          VISH
+        </div>
+        <div class="menu-bar">
+          <!-- <i class="fa fa-google"></i> -->
+          <img src="{% static "pack/img/logo/gk089.png" %}" alt="menu" class="menu-bar-click"/>
+          <div class="side-bar">
+            <ul class="links">
+              <li class="add-record"><a href="#">New Record</a></a>
+              <li><a href="#">Edit Record</a></li>
+              <li><a href="#">Delete Record</a></li>
+              <li class="all-record"><a href="#">All Record</a></a>
+              <li class="record-data"><a href="#">Data for new record</a></a>
+              <li><a href="#">Last record</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <!-- Add new code start -->
+      <div class="new-code">
+        <div class="register">
+          <p>Close Register</p>
+        </div>
+        <form action="" method="get" accept-charset="utf-8">
+          <ul>
+            <li>
+              <label for="">Heading ~~></label>
+              <input type="text" placeholder="Heading" />
+            </li>
+            <li>
+              <label for="">Description ~~></label>
+              <input type="text" placeholder="Description" />
+            </li>
+            <li>
+              <label for="">Syntax ~~></label>
+              <input type="text" placeholder="Example of code" />
+            </li>
+            <li>
+              <label for="">Uplod your Data ~~></label>
+              <input type="file" />
+            </li>
+            <li>
+              <label for="">Save your record ~~></label>
+              <input type="submit" value="Add Record"/>
+            </li>
+          </ul>
+        </form>
+      </div>
+      <!-- Add new code end -->
+      
+      <!-- show all codes start here -->
+      <div class="all-codes">
+        <div class="code-data">
+          <h3>Code Id : 001</h3>
+          <h2>Heading</h2>
+          <p>Description</p>
+          <pre>Syntax</pre>
+          <img src="img/codes/gk016.png" alt="" />
+        </div>
+      <div>
+        <div class="all-codes">
+        <div class="code-data">
+          <h3>Code Id : 001</h3>
+          <h2>Heading</h2>
+          <p>Description</p>
+          <pre>Syntax</pre>
+          <img src="img/codes/gk016.png" alt="" />
+        </div>
+      </div>
+        <div class="all-codes">
+        <div class="code-data">
+          <h3>Code Id : 001</h3>
+          <h2>Heading</h2>
+          <p>Description</p>
+          <pre>Syntax</pre>
+          <img src="img/codes/gk016.png" alt="" />
+        </div>
+      </div>
+        <div class="all-codes">
+        <div class="code-data">
+          <h3>Code Id : 001</h3>
+          <h2>Heading</h2>
+          <p>Description</p>
+          <pre>Syntax</pre>
+          <img src="img/codes/gk016.png" alt="" />
+        </div>
+      </div>
+        <div class="all-codes">
+        <div class="code-data">
+          <h3>Code Id : 001</h3>
+          <h2>Heading</h2>
+          <p>Description</p>
+          <pre>Syntax</pre>
+          <img src="img/codes/gk016.png" alt="" />
+        </div>
+      </div>
+        <div class="all-codes">
+        <div class="code-data">
+          <h3>Code Id : 001</h3>
+          <h2>Heading</h2>
+          <p>Description</p>
+          <pre>Syntax</pre>
+          <img src="{% static "pack/img/codes/gk016.png" %}" alt="upload" />
+        </div>
+      </div>
+        <div class="all-codes">
+        <div class="code-data">
+          <h3>Code Id : 001</h3>
+          <h2>Heading</h2>
+          <p>Description</p>
+          <pre>Syntax</pre>
+          <img src="img/codes/gk016.png" alt="" />
+        </div>
+      </div>
+      </div>
+      </div>
+      <!-- show all codes end here -->
+      <div class="record-new-data">
+        <div class="image">
+          <img src="/img/recorder/gk001.png" alt="gk001" />
+          <button >Record new Data</button>
+        </div>
+        <div class="image">
+          <img src="/img/recorder/gk001.png" alt="gk001" />
+          <button >Record new Data</button>
+        </div>
+        <div class="image">
+          <img src="/img/recorder/gk001.png" alt="gk001" />
+          <button >Record new Data</button>
+        </div>
+        <div class="image">
+          <img src="/img/recorder/gk001.png" alt="gk001" />
+          <button >Record new Data</button>
+        </div>
+      </div>
+      <div class="box">
+        
+      </div>
+      
+    <!-- project body end here -->
+    </div>
+  </body>
+  <script src="{% static "pack/js/main-page.js" %}" type="text/javascript" charset="utf-8"></script>
+</html>
