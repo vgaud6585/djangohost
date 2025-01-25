@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+     <html>
+     <head>
+         <title>User List</title>
+     </head>
+     <body>
+         <h1>User List</h1>
+         <a href="{% url 'user_create' %}">Add User</a>
+         <table>
+             <tr>
+                 <th>Name</th>
+                 <th>Age</th>
+                 <th>Image</th>
+                 <th>Actions</th>
+             </tr>
+             {% for user in users %}
+             <tr>
+                 <td>{{ user.usr_name }}</td>
+                 <td>{{ user.usr_age }}</td>
+                 <td><img src="{{ user.usr_image.url }}" alt="{{ user.usr_name }}" width="50"></td>
+                 <td>
+                     <a href="{% url 'user_edit' user.pk %}">Edit</a>
+                     <a href="{% url 'user_delete' user.pk %}">Delete</a>
+                 </td>
+             </tr>
+             {% endfor %}
+         </table>
+     </body>
+     </html>

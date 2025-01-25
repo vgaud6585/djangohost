@@ -1,0 +1,253 @@
+To create a Django application that allows users to manage a database with fields for `usr_name`, `usr_age`, and `usr_image`, you can follow these steps:
+
+### Step 1: Set Up Your Django Project
+
+1. **Install Django** (if you haven't already):
+
+   ```bash
+   pip install django
+   ```
+
+2. **Create a new Django project**:
+
+   ```bash
+   django-admin startproject user_management
+   cd user_management
+   ```
+
+3. **Create a new Django app**:
+
+   ```bash
+   python manage.py startapp users
+   ```
+
+4. **Add the app to your project settings**. Open `user_management/settings.py` and add `'users'` to the `INSTALLED_APPS` list:
+
+   ```python
+   INSTALLED_APPS = [
+       ...
+       'users',
+   ]
+   ```
+
+### Step 2: Create the User Model
+
+1. **Define the model** in `users/models.py`:
+
+   ```python
+   from django.db import models
+
+   class User(models.Model):
+       usr_name = models.CharField(max_length=100)
+       usr_age = models.IntegerField()
+       usr_image = models.ImageField(upload_to='images/')
+
+       def __str__(self):
+           return self.usr_name
+   ```
+
+2. **Run migrations** to create the database table:
+
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+
+### Step 3: Create Forms for User Input
+
+1. **Create a form** in `users/forms.py`:
+
+   ```python
+   from django import forms
+   from .models import User
+
+   class UserForm(forms.ModelForm):
+       class Meta:
+           model = User
+           fields = ['usr_name', 'usr_age', 'usr_image']
+   ```
+
+### Step 4: Create Views for CRUD Operations
+
+1. **Define views** in `users/views.py`:
+
+   ```python
+   from django.shortcuts import render, redirect, get_object_or_404
+   from .models import User
+   from .forms import UserForm
+
+   def user_list(request):
+       users = User.objects.all()
+       return render(request, 'users/user_list.html', {'users': users})
+
+   def user_create(request):
+       if request.method == 'POST':
+           form = UserForm(request.POST, request.FILES)
+           if form.is_valid():
+               form.save()
+               return redirect('user_list')
+       else:
+           form = UserForm()
+       return render(request, 'users/user_form.html', {'form': form})
+
+   def user_edit(request, pk):
+       user = get_object_or_404(User, pk=pk)
+       if request.method == 'POST':
+           form = UserForm(request.POST, request.FILES, instance=user)
+           if form.is_valid():
+               form.save()
+               return redirect('user_list')
+       else:
+           form = UserForm(instance=user)
+       return render(request, 'users/user_form.html', {'form': form})
+
+   def user_delete(request, pk):
+       user = get_object_or_404(User, pk=pk)
+       if request.method == 'POST':
+           user.delete()
+           return redirect('user_list')
+       return render(request, 'users/user_confirm_delete.html', {'user': user})
+   ```
+
+### Step 5: Set Up URLs
+
+1. **Define URLs** in `users/urls.py`:
+
+   ```python
+   from django.urls import path
+   from .views import user_list, user_create, user_edit, user_delete
+
+   urlpatterns = [
+       path('', user_list, name='user_list'),
+       path('create/', user_create, name='user_create'),
+       path('edit/<int:pk>/', user_edit, name='user_edit'),
+       path('delete/<int:pk>/', user_delete, name='user_delete'),
+   ]
+   ```
+
+2. **Include the app URLs** in the main `urls.py` of your project (`user_management/urls.py`):
+
+   ```python
+   from django.contrib import admin
+   from django.urls import path, include
+
+   urlpatterns = [
+       path('admin/', admin.site.urls),
+       path('users/', include('users.urls')),
+   ]
+   ```
+
+### Step 6: Create Templates
+
+1. **Create a directory for templates**: `users/templates/users/`.
+
+2. **Create the following HTML files**:
+
+   - **user_list.html**:
+
+     ```html
+     <!DOCTYPE html>
+     <html>
+     <head>
+         <title>User List</title>
+     </head>
+     <body>
+         <h1>User List</h1>
+         <a href="{% url 'user_create' %}">Add User</a>
+         <table>
+             <tr>
+                 <th>Name</th>
+                 <th>Age</th>
+                 <th>Image</th>
+                 <th>Actions</th>
+             </tr>
+             {% for user in users %}
+             <tr>
+                 <td>{{ user.usr_name }}</td>
+                 <td>{{ user.usr_age }}</td>
+                 <td><img src="{{ user.usr_image.url }}" alt="{{ user.usr_name }}" width="50"></td>
+                 <td>
+                     <a href="{% url 'user_edit' user.pk %}">Edit</a>
+                     <a href="{% url 'user_delete' user.pk %}">Delete</a>
+                 </td>
+             </tr>
+             {% endfor %}
+         </table>
+     </body>
+     </html>
+     ```
+
+   - **user_form.html**:
+
+     ```html
+     <!DOCTYPE html>
+     <html>
+     <head>
+         <title>User Form</title>
+     </head>
+     <body>
+         <h1>{% if form.instance.pk %}Edit User{% else %}Add User{% endif %}</h1>
+         <form method="post" enctype="multipart/form-data">
+             {% csrf_token %}
+             {{ form.as_p }}
+             <button type="submit">Save</button>
+         </form>
+         <a href="{% url 'user_list' %}">Cancel</a>
+     </body>
+     </html>
+     ```
+
+   - **user_confirm_delete.html**:
+
+     ```html
+     <!DOCTYPE html>
+     <html>
+     <head>
+         <title>Delete User</title>
+     </head>
+     <body>
+         <h1>Delete User</h1>
+         <p>Are you sure you want to delete "{{ user.usr_name }}"?</p>
+         <form method="post">
+             {% csrf_token %}
+             <button type="submit">Confirm</button>
+         </form>
+         <a href="{% url 'user_list' %}">Cancel</a>
+     </body>
+     </html>
+     ```
+
+### Step 7: Configure Media Files
+
+1. **Add media settings** in `user_management/settings.py`:
+
+   ```python
+   MEDIA_URL = '/media/'
+   MEDIA_ROOT = BASE_DIR / 'media'
+   ```
+
+2. **Update the main `urls.py`** to serve media files during development:
+
+   ```python
+   from django.conf import settings
+   from django.conf.urls.static import static
+
+   urlpatterns = [
+       path('admin/', admin.site.urls),
+       path('users/', include('users.urls')),
+   ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+   ```
+
+### Step 8: Run the Server
+
+1. **Run the development server**:
+
+   ```bash
+   python manage.py runserver
+   ```
+
+2. **Access the application** at `http://127.0.0.1:8000/users/`.
+
+### Conclusion
+
+You now have a basic Django application that allows users to add, edit, and delete user records with fields for name, age, and image. You can further enhance this application by adding features like user authentication, validation, and styling with CSS frameworks.
